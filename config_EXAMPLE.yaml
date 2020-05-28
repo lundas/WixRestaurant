@@ -1,0 +1,5 @@
+PATH: /PATH/TO/FILES/ 
+rest_id: RESTAURANT ID # taken from wix restaurant api
+ss_id: GOOGLE SHEETS ID
+headers: 
+  - Authorization: Bearer TOKEN # taken from wix restaurant api

@@ -10,11 +10,11 @@ data_reformat = data_reformat.Data_Reformat()
 gAPI = google_API.GoogleAPI()
 
 # Config
-conf_file = './config.yaml'
+conf_file = '/PATH/TO/CONFIG.yaml'
 with open(conf_file, 'r') as stream:
     config = yaml.safe_load(stream)
 
-print(type(config))
+# print(type(config))
 
 # Parameters
 restaurant_id = config['rest_id']

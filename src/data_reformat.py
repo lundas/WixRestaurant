@@ -132,26 +132,7 @@ class Data_Reformat():
         return df
 
 
-if __name__ == '__main__':
-    import api_calls
 
-    api = api_calls.Wix_Restaurant_API()
-    data_reformat = Data_Reformat()
-
-    restaurant_id='1452613692600297'
-    headers = {'Authorization':'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjcmVhdGVkIjoxNTg2MjEwNTUxMDE5LCJpZCI6ImNvbS53aXgiLCJkYXRhIjoiYTYzZDMyOWEtZjVjMC00M2Q4LWI1YjktMDMzZGY5MDM1ZGRiIn0.huxcKPFLKq06czNSWJdXRaBVjG8EurVQliYQNOrukLk'}
-
-    json = api.orders_api_call(rest_id=restaurant_id, headers=headers)
-    items_df = api.menu_api_call(rest_id=restaurant_id, headers=headers)
-    df = api.format_orders_api_call(json, items_df)
-
-    data = data_reformat.format_df(df)
-    orders = data_reformat.order_processing(data)
-    workwave = data_reformat.workwave(orders)
-
-    data.to_csv('./data_test.csv')
-    orders.to_csv('./orders_test.csv')
-    workwave.to_csv('./workwave_test.csv')
 
 
 
