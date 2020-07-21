@@ -11,7 +11,8 @@ class Data_Reformat():
 
         # cut off for first tuesday delivery
         first_tues_dtc = pd.Timestamp(tz='US/Pacific', year=2020, month=4, day=17, hour=18)
-        if date <= first_tues_dtc:
+        last_tues_dtc = pd.Timestamp(tz='US/Pacific', year=2020, month=6, day=9, hour=18)
+        if date <= first_tues_dtc or date >= last_tues_dtc:
             if date.weekday() == 0: # If created day on Mon -> following Wed
                 del_date = date + pd.Timedelta(days=2)
             elif date.weekday() in [1,2,3] and date.hour >= 18: # TWTh after 6pm -> 2 days later
@@ -33,6 +34,53 @@ class Data_Reformat():
                 del_date = date + pd.Timedelta(days=1)
         
         return del_date
+
+    def find_next_weekday(date, weekday):
+        '''finds date of next weekday provided in numerical form
+        relative to the provided date
+        0 == Monday, 6 == Sunday
+        '''
+        if weekday > 6:
+            print('Please enter a weekday between 0 and 6')
+            return
+            
+        day = pd.to_datetime(date)
+        if weekday < day.weekday():
+            day = day + pd.Timedelta(days= 7-day.weekday())
+        while day.weekday() < weekday:
+            day = day + pd.Timedelta(days=1)
+            
+        return day.date()
+
+    def oakland_delivery_dates(df):
+        '''Takes df and modifies Execution Dates for Oakland deliveries
+        to next Wednesday or Saturday
+        '''
+        for i in df.index:
+            if df.loc[i, 'delivery.type'] == 'delivery':
+                zipcode = int(df['address.formatted'].str.extract(r'(\d{5})').loc[i, 0])
+                if zipcode > 94188:
+                    weekday = df.loc[i, 'created'].weekday()
+                    if df.loc[i, 'created'] < pd.Timestamp(tz='US/Pacific', year=2020, month=6, day=8):
+                        if weekday < 2:
+                            df.at[i, 'Execution Date'] = find_next_weekday(
+                                df.loc[i, 'created'], 2
+                            )
+    #                         print(i, zipcode, df.loc[i, 'Execution Date'])
+                        else: 
+                            df.at[i, 'Execution Date'] = find_next_weekday(
+                                df.loc[i, 'created'], 5
+                            )
+    #                         print(i, zipcode, df.loc[i, 'Execution Date'])
+                    else:
+                        df.at[i, 'Execution Date'] = find_next_weekday(
+                                df.loc[i, 'created'], 5
+                        )
+    #                     print(i, zipcode, df.loc[i, 'Execution Date'])
+            else:
+                pass
+            
+        return df['Execution Date']
 
     def format_df(self, df):
         ''' Takes df produced from format_orders_api_call() and formats it
