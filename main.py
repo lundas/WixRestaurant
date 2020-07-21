@@ -27,6 +27,7 @@ items_df = api.menu_api_call(rest_id=restaurant_id, headers=headers)
 df = api.format_orders_api_call(json, items_df)
 
 data = data_reformat.format_df(df)
+data['Execution Date'] = data_reformat.oakland_delivery_dates(data)
 orders = data_reformat.order_processing(data)
 workwave = data_reformat.workwave(orders)
 

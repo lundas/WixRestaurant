@@ -63,17 +63,17 @@ class Data_Reformat():
                     weekday = df.loc[i, 'created'].weekday()
                     if df.loc[i, 'created'] < pd.Timestamp(tz='US/Pacific', year=2020, month=6, day=8):
                         if weekday < 2:
-                            df.at[i, 'Execution Date'] = find_next_weekday(
+                            df.at[i, 'Execution Date'] = self.find_next_weekday(
                                 df.loc[i, 'created'], 2
                             )
     #                         print(i, zipcode, df.loc[i, 'Execution Date'])
                         else: 
-                            df.at[i, 'Execution Date'] = find_next_weekday(
+                            df.at[i, 'Execution Date'] = self.find_next_weekday(
                                 df.loc[i, 'created'], 5
                             )
     #                         print(i, zipcode, df.loc[i, 'Execution Date'])
                     else:
-                        df.at[i, 'Execution Date'] = find_next_weekday(
+                        df.at[i, 'Execution Date'] = self.find_next_weekday(
                                 df.loc[i, 'created'], 5
                         )
     #                     print(i, zipcode, df.loc[i, 'Execution Date'])
