@@ -35,7 +35,7 @@ class Data_Reformat():
         
         return del_date
 
-    def find_next_weekday(date, weekday):
+    def find_next_weekday(self, date, weekday):
         '''finds date of next weekday provided in numerical form
         relative to the provided date
         0 == Monday, 6 == Sunday
@@ -52,7 +52,7 @@ class Data_Reformat():
             
         return day.date()
 
-    def oakland_delivery_dates(df):
+    def oakland_delivery_dates(self, df):
         '''Takes df and modifies Execution Dates for Oakland deliveries
         to next Wednesday or Saturday
         '''
